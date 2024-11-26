@@ -4,10 +4,82 @@ require "db_funcs.php";
 
 function getNewImage(int $oldImageId)
 {
-    // get a new random image;
+    $row = sql_fetch(
+        'SELECT * FROM images 
+        WHERE id != :oldId 
+        ORDER BY RAND() 
+        LIMIT 1;',
+        [
+            ':oldId' => $oldImageId
+        ]
+    );
+
+    $answers = getRandomWords(3, $row['image_answer']);
+    $answers[0] = $row['image_answer'];
+    shuffle_assoc($answers);
+    $row['answers'] = $answers;
+
+    return $row;
 }
 
-function getRandomWords(int $count = 3)
+function getImage(int $id, array $answerIds = null)
 {
-    // get random words from the database
+    $row = fetch('images', ['id' => $id]);
+    $row['answers'] = getWords($answerIds, $row['image_answer']);
+
+    return $row;
+}
+
+function getRandomWords(int $count = 3, string $forbiddenWord = "_")
+{
+    return sql_fetchAll(
+        "SELECT * FROM answers
+         Where answer NOT LIKE :forbbidenWord
+         ORDER BY RAND()
+         LIMIT :count",
+        [
+            ":forbbidenWord" => $forbiddenWord,
+            ":count" => $count
+        ],
+        PDO::FETCH_KEY_PAIR
+    );
+}
+
+function getWords(array $wordIds, string $default = 'placeholder')
+{
+
+    // $ids = implode(' OR id = ', $wordIds);
+    // $fetchedWords = sql_fetchAll(
+    //     'SELECT * FROM answers
+    //     WHERE id = :ids',
+    //     [':ids' => $ids],
+    //     PDO::FETCH_KEY_PAIR
+    // );
+    $fetchedWords = sql_fetchAll(
+        'SELECT * FROM answers',
+        null,
+        PDO::FETCH_KEY_PAIR
+    );
+    print_r($fetchedWords);
+    $words = [];
+    foreach ($wordIds as $id) {
+        $words[$id] = $fetchedWords[$id] ?? $default;
+    }
+    return $words;
+}
+
+
+function shuffle_assoc(&$array)
+{
+    $keys = array_keys($array);
+
+    shuffle($keys);
+
+    foreach ($keys as $key) {
+        $new[$key] = $array[$key];
+    }
+
+    $array = $new;
+
+    return true;
 }
