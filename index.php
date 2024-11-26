@@ -5,15 +5,21 @@ error_reporting(E_ALL);
 include('database.php');
 
 $id = @$_GET['id'];
-$post_answerIds = @$_POST['answers-id'];
+$answerIds = @$_POST['answer-ids'];
+$answer = @$_POST['radio'];
+$submit = @$_POST['submit'];
 
-
-if ($id && $post_answerIds) {
-
-    $answerIds = explode(',', $post_answerIds);
-    $image = getImage($id, $answerIds);
+if ($id) {
+    if (
+        strtolower($submit) == 'volgende'
+        || !isset($answerIds)
+    ) {
+        header("Location: index.php");
+    }
+    $answerArray = explode(',', $answerIds);
+    $image = getImage($id, $answerArray);
     if (!$image) {
-        // redirect to home... TODO
+        header("Location: index.php");
     }
 } else {
     $image = getNewImage();
@@ -23,9 +29,10 @@ if ($id && $post_answerIds) {
 
 
 
-print '<pre>';
-print_r(@$_POST);
-print '</pre>';
+// print '<pre>';
+// print 'POST<br>';
+// print_r(@$_POST);
+// print '</pre>';
 
 ?>
 <!DOCTYPE html>
@@ -36,6 +43,15 @@ print '</pre>';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>What's That Pic!</title>
     <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    <style>
+        .correct {
+            color: green;
+        }
+
+        .not-correct {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -51,12 +67,16 @@ print '</pre>';
                     <li>
                         <?php foreach ($image['answers'] as $id => $word) : ?>
                             <input type="radio" name="radio" id="radio<?= $id; ?>" value="<?= $id; ?>" />
-                            <label for="radio<?= $id; ?>"><?= $word; ?></label>
+                            <label
+                                <?php if (isset($answer) && $answer == $id): ?>
+                                class="<?= $id == 0 ? 'correct' : 'not-correct' ?>"
+                                <?php endif; ?>
+                                for="radio<?= $id; ?>"><?= $word; ?></label>
                         <?php endforeach; ?>
                     </li>
                 </ul>
                 <input type="hidden" name="answer-ids" id="answer-ids" value="<?= $answerIds; ?>" />
-                <input type="submit" name="submit" id="submit" value="Oké">
+                <input type="submit" name="submit" id="submit" value="<?= isset($answer) && $answer == 0 ? 'Volgende' : 'Oké' ?>">
             </form>
         </section>
     </main>

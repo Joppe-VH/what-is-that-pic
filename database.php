@@ -15,7 +15,7 @@ function getNewImage(int $oldImageId = null)
     );
 
     $answers = getRandomWords(3, $row['image_answer']);
-    $answers[0] = $row['image_answer'];
+    $answers['0'] = $row['image_answer'];
     shuffle_assoc($answers);
     $row['answers'] = $answers;
 
@@ -62,7 +62,6 @@ function getWords(array $wordIds, string $default = 'placeholder')
         null,
         PDO::FETCH_KEY_PAIR
     );
-    print_r($fetchedWords);
     $words = [];
     foreach ($wordIds as $id) {
         $words[$id] = $fetchedWords[$id] ?? $default;
