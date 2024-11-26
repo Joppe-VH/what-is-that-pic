@@ -2,7 +2,7 @@
 
 require "db_funcs.php";
 
-function getNewImage(int $oldImageId)
+function getNewImage(int $oldImageId = null)
 {
     $row = sql_fetch(
         'SELECT * FROM images 
@@ -10,7 +10,7 @@ function getNewImage(int $oldImageId)
         ORDER BY RAND() 
         LIMIT 1;',
         [
-            ':oldId' => $oldImageId
+            ':oldId' => $oldImageId ?? 0
         ]
     );
 
