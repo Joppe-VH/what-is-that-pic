@@ -26,14 +26,6 @@ if ($id) {
     $answerIds = implode(",", array_keys($image['answers']));
 }
 
-
-
-
-// print '<pre>';
-// print 'POST<br>';
-// print_r(@$_POST);
-// print '</pre>';
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
