@@ -14,7 +14,7 @@ if (!defined('DATABASE_FUNCTIONS_DEFINED')) {
         $db_port = 8889;
         $db_user = 'root';
         $db_password = 'root';
-        $db_db = 'news';
+        $db_db = 'db_wtp';
 
         if ($forceReConnect || !$db) {
             try {
