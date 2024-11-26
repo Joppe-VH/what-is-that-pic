@@ -19,7 +19,21 @@ print '</pre>';
 </head>
 
 <body>
-
+    <main>
+        <section>
+            <form action="index.php?id=1" method="POST">
+                <header>
+                    <div>
+                        <img src="https://static.arasaac.org/pictograms/2349/2349_500.png" alt="">
+                    </div>
+                </header>
+                <button type="submit">Woord1</button>
+                <button type="submit">Woord2</button>
+                <button type="submit">Woord3</button>
+                <button type="submit">Woord4</button>
+            </form>
+        </section>
+    </main>
 </body>
 
 </html>
