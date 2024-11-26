@@ -16,28 +16,60 @@ USE `db_wtp` ;
 CREATE TABLE IF NOT EXISTS `db_wtp`.`images` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `image_name` VARCHAR(255) NOT NULL,
-  `image_link` VARCHAR(2000) NOT NULL,
+  `image_link` VARCHAR(255) NOT NULL,
   `image_description` VARCHAR(255) NOT NULL,
   `image_answer` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `image_link_UNIQUE` (`image_link` ASC) VISIBLE,
-  UNIQUE INDEX `image_answer_UNIQUE` (`image_answer` ASC) VISIBLE)
+  UNIQUE INDEX `image_link_UNIQUE` (`image_link` ASC) VISIBLE)
 ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `db_wtp`.`answers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_wtp`.`answers` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `images_id` INT NULL,
-  `answer` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_answers_images_idx` (`images_id` ASC) VISIBLE,
-  CONSTRAINT `fk_answers_images`
-    FOREIGN KEY (`images_id`)
-    REFERENCES `db_wtp`.`images` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `answer` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO answers (id, answer) VALUES
+(1, 'hond'),
+(2, 'kat'),
+(3, 'boom'),
+(4, 'huis'),
+(5, 'appel'),
+(6, 'stoel'),
+(7, 'water'),
+(8, 'fiets'),
+(9, 'boek'),
+(10, 'tafel'),
+(11, 'vader'),
+(12, 'moeder'),
+(13, 'kind'),
+(14, 'auto'),
+(15, 'deur'),
+(16, 'bloem'),
+(17, 'gras'),
+(18, 'ster'),
+(19, 'vlag'),
+(20, 'sneeuw'),
+(21, 'zon'),
+(22, 'maan'),
+(23, 'regen'),
+(24, 'hondje'),
+(25, 'katje'),
+(26, 'vogel'),
+(27, 'koe'),
+(28, 'kip'),
+(29, 'stoel'),
+(30, 'tak');
+
+INSERT INTO images (image_name, image_link, image_description, image_answer)
+VALUES 
+("auto", "https://static.arasaac.org/pictograms/2340/2340_2500.png", "afbeelding van een auto", "auto"),
+("konijn", "https://static.arasaac.org/pictograms/2351/2351_500.png", "afbeelding van een konijn", "konijn"),
+("playstation", "https://static.arasaac.org/pictograms/2354/2354_500.png", "afbeelding van een spelconsole", "playstation"),
+("koffiekoek", "https://static.arasaac.org/pictograms/2358/2358_500.png", "afbeelding van een croissant", "koffiekoek"),
+("schilderij", "https://static.arasaac.org/pictograms/2360/2360_500.png", "afbeelding van een schilderij", "schilderij")
