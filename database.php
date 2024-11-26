@@ -22,9 +22,11 @@ function getNewImage(int $oldImageId = null)
     return $row;
 }
 
-function getImage(int $id, array $answerIds = null)
+function getImage(int $id, array $answerIds)
 {
     $row = fetch('images', ['id' => $id]);
+    if (!$row) return;
+
     $row['answers'] = getWords($answerIds, $row['image_answer']);
 
     return $row;

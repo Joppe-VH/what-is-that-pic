@@ -2,9 +2,29 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+include('database.php');
+
+$id = @$_GET['id'];
+$post_answerIds = @$_POST['answers-id'];
+
+
+if ($id && $post_answerIds) {
+
+    $answerIds = explode(',', $post_answerIds);
+    $image = getImage($id, $answerIds);
+    if (!$image) {
+        // redirect to home... TODO
+    }
+} else {
+    $image = getNewImage();
+    $answerIds = implode(",", array_keys($image['answers']));
+}
+
+
+
 
 print '<pre>';
-print_r($_GET);
+print_r(@$_POST);
 print '</pre>';
 
 ?>
@@ -21,16 +41,22 @@ print '</pre>';
 <body>
     <main>
         <section>
-            <form action="index.php?id=1" method="POST">
+            <form action="index.php?id=<?= $image['id']; ?>" method="POST">
                 <header>
                     <div>
-                        <img src="https://static.arasaac.org/pictograms/2349/2349_500.png" alt="">
+                        <img src="<?= $image['image_link']; ?>" alt="">
                     </div>
                 </header>
-                <button type="submit">Woord1</button>
-                <button type="submit">Woord2</button>
-                <button type="submit">Woord3</button>
-                <button type="submit">Woord4</button>
+                <ul>
+                    <li>
+                        <?php foreach ($image['answers'] as $id => $word) : ?>
+                            <input type="radio" name="radio" id="radio<?= $id; ?>" value="<?= $id; ?>" />
+                            <label for="radio<?= $id; ?>"><?= $word; ?></label>
+                        <?php endforeach; ?>
+                    </li>
+                </ul>
+                <input type="hidden" name="answer-ids" id="answer-ids" value="<?= $answerIds; ?>" />
+                <input type="submit" name="submit" id="submit" value="Oké">
             </form>
         </section>
     </main>
