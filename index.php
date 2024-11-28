@@ -15,11 +15,13 @@ if ($id) {
         || !isset($answerIds)
     ) {
         header("Location: index.php");
+        exit;
     }
     $answerArray = explode(',', $answerIds);
     $image = getImage($id, $answerArray);
     if (!$image) {
         header("Location: index.php");
+        exit;
     }
 } else {
     $image = getNewImage();
