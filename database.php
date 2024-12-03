@@ -2,8 +2,10 @@
 
 require "db_funcs.php";
 
-function getNewImage(int $oldImageId = null)
+function getNewImage()
 {
+    static $oldImageId;
+
     $row = sql_fetch(
         'SELECT * FROM images 
         WHERE id != :oldId 
@@ -19,6 +21,7 @@ function getNewImage(int $oldImageId = null)
     shuffle_assoc($answers);
     $row['answers'] = $answers;
 
+    $oldImageId = $row['id'];
     return $row;
 }
 
