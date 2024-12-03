@@ -4,29 +4,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 include('database.php');
 
-$id = @$_GET['id'];
-$answerIds = @$_POST['answer-ids'];
-$answer = @$_POST['radio'];
-$submit = @$_POST['submit'];
+session_start();
 
-if ($id) {
-    if (
-        strtolower($submit) == 'volgende'
-        || !isset($answerIds)
-    ) {
-        header("Location: index.php");
-        exit;
-    }
-    $answerArray = explode(',', $answerIds);
-    $image = getImage($id, $answerArray);
-    if (!$image) {
-        header("Location: index.php");
-        exit;
-    }
-} else {
-    $image = getNewImage();
-    $answerIds = implode(",", array_keys($image['answers']));
+$submit = $_POST['submit'] ?? '';
+if (strtolower($submit) === 'volgende') {
+    unset($_SESSION['current-image']);
+    unset($_POST['radio']);
 }
+
+$image = $_SESSION['current-image'] ?? getNewImage();
+$_SESSION['current-image'] = $image;
+
+$answer = $_POST['radio'] ?? null;
 
 ?>
 <!DOCTYPE html>
@@ -51,7 +40,7 @@ if ($id) {
 <body>
     <main>
         <section>
-            <form action="index.php?id=<?= $image['id']; ?>" method="POST">
+            <form action="index.php" method="POST">
                 <header>
                     <div>
                         <img src="<?= $image['image_link']; ?>" alt="">
